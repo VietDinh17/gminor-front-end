@@ -16,6 +16,7 @@ import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 import classNames from 'classnames';
+import Divider from '@material-ui/core/Divider';
 
 const styles = {
     greenAvatar:{
@@ -52,7 +53,8 @@ class HomePage extends React.Component{
             completed: 0,
             buffer: 10,
             isFileChose: false,
-            files: []
+            files: [],
+            progressBar: false,
         }
     }
     componentDidMount() {
@@ -78,9 +80,13 @@ class HomePage extends React.Component{
         this.setState({files});
     }
 
+    handleUpLoad = () => {
+        this.setState({progressBar:true})
+    }
+
     render(){
         const { classes } = this.props;
-        const { completed, buffer, isFileChose } = this.state;
+        const { completed, buffer, progressBar } = this.state;
         
         const files = this.state.files.map(file => (
             <li key={file.name}>
@@ -100,8 +106,8 @@ class HomePage extends React.Component{
                         <img src={queue_music} className="main-logo" alt="queue_music"/>
                     </Grid>
                     <Grid item xs={5}>
-                        <Typography variant="h2">
-                            convert mp3 wav to piano music sheet
+                        <Typography variant="h2" className="main-title">
+                            convert audio to piano music sheet
                         </Typography>
 
                     </Grid>
@@ -109,18 +115,7 @@ class HomePage extends React.Component{
                 </div>
                     
                 <div className="middle-box">
-                    {/* <Button variant="contained" >
-                        <input ref={(ref) => {this.uploadInput = ref; }} type="file"/>
-                    </Button> */}
-                    {/* <label htmlFor="file-upload" className="label-file-upload">
-                        <Button variant="contained" disabled size="large">
-                            <Typography>Browse</Typography>
-                            <FolderOpenRounded className="right-icon"></FolderOpenRounded>
-                        </Button>
-                    </label>
-                    <input id="file-upload" type="file" onChange={(e)=>
-                    this.handleChange(e.target.files)}/> */}
-                    <Dropzone accept="audio/wav, audio/mp3"
+                    <Dropzone accept="audio/*"
                             onDrop={this.onDrop.bind(this)}>
                         {({ getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, acceptedFiles, rejectedFiles }) => {
                             let styles = {...baseStyle}
@@ -143,23 +138,34 @@ class HomePage extends React.Component{
                             )
                         }}
                     </Dropzone>
-                    <aside>
-                        <h4>Files: </h4>
-                        <ul>{files}</ul>
-                    </aside>
-                        {this.uploadInput != undefined && <Button variant="contained" className="button-sl-up">
-                            <Typography> Upload </Typography>
-                            <CloudUploadIcon className="right-icon"></CloudUploadIcon>
-                        </Button>}
                         {/* <Button variant="contained" className="button-sl-up">
                             <Typography> Convert </Typography>
                             <DataUsageRounded className="right-icon"></DataUsageRounded>
                         </Button> */}
                     
+               </div>
+               <div className="divider-1">
+                 <Divider variant="middle" className="divider"/>
+               </div>
+                <aside className="files-name">
+                    <ul>
+                        {files}
+                    </ul>
+                </aside>
+                <div className="upload-button">
+                        {
+                            files.length !== 0 && 
+                            <Button variant="contained" className="button-sl-up" onClick={this.handleUpLoad}> 
+                                <Typography> Upload </Typography>
+                                <CloudUploadIcon className="right-icon"></CloudUploadIcon>
+                            </Button>
+                        }
+
                 </div>
                 <div className="progress-box">
-                    <LinearProgress color="secondary" variant="buffer" value={completed} valueBuffer={buffer}/>
+                    {progressBar && <LinearProgress color="secondary" variant="buffer" value={completed} valueBuffer={buffer}/>}
                 </div>
+                <Divider variant="middle" className="divider"/>
                 <Grid container justify="center" alignItems="center">
                     <Avatar className={classes.greenAvatar}>
                         <MusicVideo/>

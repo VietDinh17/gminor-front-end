@@ -13,12 +13,23 @@
 }
 
 .main-title{
-    margin-left: -50px; 
+    margin-left: -100px; 
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold
 }
 
+.divider{
+    margin: 10% 0;
+    width: 85%;
+}
+
+.divider-1{
+    margin: 1.5% 0;
+}
 .progress-box{
-    margin-top: 1%; 
+    margin: 1% 35%;
     vertical-align: top;
+    width: 500px;
 }
 
 .drop-logo{
@@ -35,6 +46,16 @@
     vertical-align: top;
     margin:0 45% ;
     margin-top: 1%
+}
+
+.upload-button{
+    margin:  1% 48%;
+    width: 400px;
+}
+
+.files-name{
+    margin: 1% 40%;
+    width: 400px;
 }
 
 .button-sl-up{
