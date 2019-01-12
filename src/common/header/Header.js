@@ -6,9 +6,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
+import MusicNote from '@material-ui/icons/MusicNoteRounded';
 import purple from '@material-ui/core/colors/purple';
 import {createMuiTheme} from '@material-ui/core/styles';
+import {Link} from "react-router-dom";
 
 const darkpurple = purple[700];
 
@@ -24,6 +25,7 @@ const styles = {
   },
   grow: {
     flexGrow: 1,
+    marginRight: 5,
   },
   menuButton: {
     marginLeft: -12,
@@ -37,13 +39,11 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-           {/* <MenuIcon /> */}
-          </IconButton>
+          <MusicNote />
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Gminor
           </Typography>
-          <Button color="inherit">Login</Button>
+          {/* <Button color="inherit">Login</Button> */}
         </Toolbar>
       </AppBar>
     </div>

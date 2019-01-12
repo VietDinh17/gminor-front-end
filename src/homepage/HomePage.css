@@ -18,13 +18,17 @@
     font-weight: bold
 }
 
+.order-file{
+    vertical-align: top;
+    margin: 0% 50%;
+}
+
 .divider{
     margin: 10% 0;
-    width: 85%;
 }
 
 .divider-1{
-    margin: 1.5% 0;
+    margin: 1.5% 5%;
 }
 .progress-box{
     margin: 1% 35%;
@@ -44,17 +48,17 @@
 
 .middle-box{
     vertical-align: top;
-    margin:0 45% ;
+    margin:0 43.5% ;
     margin-top: 1%
 }
 
 .upload-button{
-    margin:  1% 48%;
+    margin:  1% 46%;
     width: 400px;
 }
 
 .files-name{
-    margin: 1% 40%;
+    margin: 1% 38%;
     width: 400px;
 }
 

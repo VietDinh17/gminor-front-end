@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FolderOpenRounded from '@material-ui/icons/FolderOpenRounded';
 import DataUsageRounded from '@material-ui/icons/DataUsageRounded';
-import QueueMusic from '@material-ui/icons/QueueMusic';
+import ArrowRight from '@material-ui/icons/ArrowRightAlt';
 import MusicVideo from '@material-ui/icons/MusicVideo';
 import Grid from '@material-ui/core/Grid';
 import './HomePage.css'
@@ -22,7 +22,7 @@ const styles = {
     greenAvatar:{
         margin: 10,
         color: '#fff',
-        backgroundColor: green[500]
+        backgroundColor: green[500],
     }
 }
 
@@ -45,6 +45,18 @@ const baseStyle = {
     backgroundColor: '#eee'
   };
 
+const dummyOutputFiles = [
+    {
+        name: "a"
+    },
+    {
+        name: "b"
+    },
+    {
+        name: "c"
+    }
+]
+
 class HomePage extends React.Component{
     constructor(){
         super();
@@ -54,8 +66,11 @@ class HomePage extends React.Component{
             buffer: 10,
             isFileChose: false,
             files: [],
+            oldFiles: [],
             progressBar: false,
-        }
+            convertButton: false,
+            outputFiles: dummyOutputFiles
+       }
     }
     componentDidMount() {
         this.timer = setInterval(this.progress, 500);
@@ -68,31 +83,50 @@ class HomePage extends React.Component{
     progress = () => {
         const { completed } = this.state;
         if (completed > 100) {
-        this.setState({ completed: 0, buffer: 10 });
+            this.setState({ completed: 0, buffer: 10 });
+            this.setState({ progressBar: false});
+            this.setState({ convertButton: true});
         } else {
-        const diff = Math.random() * 10;
-        const diff2 = Math.random() * 10;
-        this.setState({ completed: completed + diff, buffer: completed + diff + diff2 });
+            if(this.state.progressBar){
+                const diff = Math.random() * 10;
+                const diff2 = Math.random() * 10;
+                this.setState({ completed: completed + diff, buffer: completed + diff + diff2 });
+            }
         }
     }
 
     onDrop(files) {
         this.setState({files});
+        if(files != this.state.oldFiles){
+            this.setState({convertButton:false})
+        }
     }
 
     handleUpLoad = () => {
-        this.setState({progressBar:true})
+        this.setState({progressBar: true})
+    }
+
+    handleConvert = () => {
+        this.setState({ progressBar: true });
+        this.setState({ oldFiles: this.state.files });
     }
 
     render(){
         const { classes } = this.props;
-        const { completed, buffer, progressBar } = this.state;
+        const { completed, buffer, progressBar, convertButton, switchOn } = this.state;
         
         const files = this.state.files.map(file => (
             <li key={file.name}>
               {file.name} - {file.size} bytes
             </li>
-          ))
+        ))
+
+        const outputFiles = this.state.outputFiles.map(file => (
+            <Avatar className={classes.greenAvatar}>
+                <MusicVideo/>
+            </Avatar>
+        ))
+
         return(
             <div className="big-box">
                 <div className="top-box">
@@ -129,7 +163,7 @@ class HomePage extends React.Component{
                             >
                                 <input {...getInputProps()} />
                                 <div>
-                                {isDragAccept ? 'Drop' : 'Drag'} files here...
+                                {isDragAccept ? 'Drop' : 'Drag'} files here or click to select files
                                 </div>
                                 <p>Only *.wav and *.mp3 audios will be accepted</p>
                                 <img src={arrow_drop_down} className="drop-logo" alt="arrow_drop_down"/>
@@ -138,10 +172,6 @@ class HomePage extends React.Component{
                             )
                         }}
                     </Dropzone>
-                        {/* <Button variant="contained" className="button-sl-up">
-                            <Typography> Convert </Typography>
-                            <DataUsageRounded className="right-icon"></DataUsageRounded>
-                        </Button> */}
                     
                </div>
                <div className="divider-1">
@@ -154,25 +184,28 @@ class HomePage extends React.Component{
                 </aside>
                 <div className="upload-button">
                         {
-                            files.length !== 0 && 
+                            files.length !== 0 && !convertButton &&
                             <Button variant="contained" className="button-sl-up" onClick={this.handleUpLoad}> 
                                 <Typography> Upload </Typography>
                                 <CloudUploadIcon className="right-icon"></CloudUploadIcon>
                             </Button>
                         }
-
+                        {
+                            files.length !== 0 && convertButton &&
+                            <Button variant="contained" className="button-sl-up" onClick={this.handleConvert}>
+                                <Typography> Convert </Typography>
+                                <DataUsageRounded className="right-icon"></DataUsageRounded>
+                            </Button>
+                        }
                 </div>
                 <div className="progress-box">
                     {progressBar && <LinearProgress color="secondary" variant="buffer" value={completed} valueBuffer={buffer}/>}
                 </div>
                 <Divider variant="middle" className="divider"/>
-                <Grid container justify="center" alignItems="center">
-                    <Avatar className={classes.greenAvatar}>
-                        <MusicVideo/>
-                    </Avatar>
-                    <Avatar className={classes.greenAvatar}>
-                        <MusicVideo/>
-                    </Avatar>
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <ArrowRight fontSize="large"/>
+                    {outputFiles}
+                    <ArrowRight fontSize="large"/>
                 </Grid>
             </div>
         )
